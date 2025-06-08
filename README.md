@@ -23,7 +23,6 @@ USER 의 질문을 이해하고, 검색 및 생성형 AI를 통해 빠르게 응
 - [x] MinIO 기반 파일 업로드/아바타 저장
 - [x] Redis + RabbitMQ 통합
 - [x] Swagger / Knife4j API 문서 자동 생성
-- [x] Jenkins 기반 Docker 배포
 
 ### ✅ 프론트엔드 (Vue.js 기반)
 - [x] 로그인 및 회원가입 화면
