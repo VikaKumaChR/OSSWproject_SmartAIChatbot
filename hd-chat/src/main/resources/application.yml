@@ -1,0 +1,153 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: hd-chat
+  profiles:
+    active: dev
+  main:
+    allow-circular-references: true
+  
+  # Database Configuration
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/hd_chat?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: xy666666
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+  
+  # Redis Configuration
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    timeout: 10000
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+    password: xy666666
+  
+  # RabbitMQ Configuration
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+  
+  # File Upload Configuration
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 100MB
+  
+  # Jackson Configuration
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    serialization:
+      write-dates-as-timestamps: false
+
+  # Mail Configuration
+  mail:
+    host: smtp.qq.com
+    port: 587
+    username: 3266303694@qq.com
+    password: xamejnfkwmylcgji
+    nickname: AI Assistant
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+# MyBatis Plus Configuration
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.xingyang.chat.model.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+      table-underline: true
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# JWT Configuration
+jwt:
+  secret: xingyang123456789secretkey123456789
+  expiration: 86400 # 24 hours in seconds
+  header: Authorization
+  token-prefix: Bearer 
+
+# MinIO Configuration
+minio:
+  endpoint: http://localhost:9000
+  accessKey: minio
+  secretKey: minio123
+  bucketName: ai-pan
+  avatarBucketName: avatar
+
+# Logging Configuration
+logging:
+  level:
+    com.xingyang.chat: debug
+    org.springframework.web: info
+    org.springframework.security: info
+
+# Knife4j API Documentation
+knife4j:
+  enable: true
+  setting:
+    language: en
+    enable-swagger-models: true
+    enable-document-manage: true
+    swagger-model-name: Models
+    enable-version: false
+    enable-footer: false
+    enable-footer-custom: false
+    enable-request-cache: true
+    enable-host: false
+    enable-host-text: http://localhost:8080
+    enable-debug: true
+    enable-filter-multipart-api-method-type: POST
+    enable-after-script: true
+
+# SpringDoc Configuration
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    operationsSorter: method
+  packages-to-scan: com.xingyang.chat.controller
+  paths-to-match: /** 
+
+# AI Model configuration
+ai:
+  model:
+    api-key: sk-ce3f379d410f424a83b3ecc26d7e7e9d
+    model-id: qwen-plus
+    endpoint: https://dashscope.aliyuncs.com/compatible-mode/v1
+    max-tokens: 4000
+    temperature: 0.7 
