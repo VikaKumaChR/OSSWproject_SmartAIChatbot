@@ -1,41 +1,194 @@
-# 🤖 AI Chatbot 시스템
+# AI Chat Assistant Backend
 
-> 인공지능을 기반으로 한 차세대 고객센터 시스템  
-> ✅ 빠른 응답 속도 | ✅ 인건비 절감 | ✅ 실시간 피드백 시각화
+A robust Spring Boot application that serves as the backend for the AI Chat Assistant platform. This project provides RESTful APIs for user authentication, conversation management, and AI model integration.
 
----
+## 🚀 Technologies
 
-## 🧩 프로젝트 소개
+- **Framework**: [Spring Boot](https://spring.io/projects/spring-boot) 2.7.x
+- **Language**: Java 17
+- **Database**: MySQL 8.0
+- **ORM**: [MyBatis-Plus](https://baomidou.com/) 3.5.x
+- **Authentication**: Spring Security with JWT
+- **Cache**: Redis
+- **Message Queue**: RabbitMQ
+- **API Documentation**: Knife4j (Swagger)
+- **File Storage**: MinIO
+- **AI Integration**: LangChain4j with OpenAI/Alibaba DashScope
+- **Email Service**: Spring Mail
 
-AI Chatbot 는 [Alibaba 통의천문 (qwen-plus)] API를 활용한 **지능형 응답 시스템**입니다.  
-USER 의 질문을 이해하고, 검색 및 생성형 AI를 통해 빠르게 응답하며,  
-운영자는 피드백 데이터를 통해 응답 품질을 분석할 수 있습니다.
+## 📋 Features
 
-> 💡 *Spring Boot + Vue.js 기반의 통합형 백오피스 지원*
+- User authentication and authorization with JWT
+- Email verification and password reset
+- User profile management
+- Conversation and message management
+- Real-time chat with AI models
+- File upload and management
+- Admin dashboard and user management
+- API documentation with Swagger/Knife4j
+- Comprehensive logging and exception handling
 
----
+## 🛠️ Project Setup
 
-## 🔧 주요 기능
+### Prerequisites
 
-### ✅ 후방 시스템 (Spring Boot 기반)
-- [x] JWT 인증 및 사용자 관리
-- [x] AI 응답 처리 (통의천문 API 연동)
-- [x] MinIO 기반 파일 업로드/아바타 저장
-- [x] Redis + RabbitMQ 통합
-- [x] Swagger / Knife4j API 문서 자동 생성
+- JDK 17
+- Maven 3.6+
+- MySQL 8.0+
+- Redis
+- RabbitMQ
+- MinIO (optional, for file storage)
 
-### ✅ 프론트엔드 (Vue.js 기반)
-- [x] 로그인 및 회원가입 화면
-- [x] 실시간 AI 채팅 인터페이스
-- [x] 사용자 정보 관리 및 설정
+### Database Setup
 
----
+1. Create a MySQL database named `hd_chat`
+2. The application will automatically create tables on startup using the SQL scripts in `src/main/resources/db`
 
-## 🛠 기술 스택
+### Configuration
 
-| 분류 | 사용 기술 |
-|------|------------|
-| Backend | `Java 17`, `Spring Boot`, `MyBatis Plus`, `Redis`, `RabbitMQ`, `MinIO`, `Spring Security`, `JWT` |
-| AI | `阿里云 通义千问 API (qwen-plus)` |
-| Frontend | `Vue.js`, `Axios`, `Vuex/Pinia`, `Element UI` |
-| DevOps | `Docker`, `Jenkins`, `Nginx`, `MySQL 8.0` |
+Create an `application-dev.yml` file in the `src/main/resources` directory with your local configuration:
+
+```yaml
+spring:
+  datasource:
+    url: jdbc:mysql://45.207.192.41:3306/hd_chat?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: your_username
+    password: your_password
+  
+  redis:
+    host: 45.207.192.41
+    port: 6379
+    password: your_redis_password
+    
+  rabbitmq:
+    host: 45.207.192.41
+    port: 5672
+    username: guest
+    password: guest
+    
+  mail:
+    host: smtp.example.com
+    port: 587
+    username: your_email@example.com
+    password: your_email_password
+    
+minio:
+  endpoint: http://45.207.192.41:9000
+  accessKey: your_access_key
+  secretKey: your_secret_key
+  bucketName: ai-pan
+  avatarBucketName: avatar
+  
+ai:
+  model:
+    api-key: your_api_key
+    model-id: your_model_id
+    endpoint: your_endpoint
+```
+
+### Building and Running
+
+```bash
+# Clone the repository
+git clone https://github.com/VikaKumaChR/OSSWproject_SmartAIChatbot.git
+cd ai-chat-assistant-backend
+
+# Build the project
+mvn clean package -DskipTests
+
+# Run the application
+java -jar target/hd-chat-0.0.1-SNAPSHOT.jar
+```
+
+Alternatively, you can run it directly with Maven:
+
+```bash
+mvn spring-boot:run
+```
+
+### Docker Deployment
+
+A Dockerfile is provided for containerization:
+
+```bash
+# Build the Docker image
+docker build -t ai-chat-backend .
+
+# Run the container
+docker run -p 8087:8087 ai-chat-backend
+```
+
+## 📁 Project Structure
+
+```
+src/main/
+├── java/com/xingyang/chat/
+│   ├── config/           # Configuration classes
+│   ├── controller/       # REST API controllers
+│   ├── exception/        # Exception handling
+│   ├── mapper/           # MyBatis mappers
+│   ├── model/            # Data models (entities, DTOs)
+│   ├── security/         # Security configuration and JWT
+│   ├── service/          # Business logic
+│   ├── util/             # Utility classes
+│   └── ChatApplication.java  # Main application class
+│
+└── resources/
+    ├── db/               # Database scripts
+    ├── mapper/           # MyBatis XML mapper files
+    ├── static/           # Static resources
+    ├── templates/        # Email templates
+    ├── application.yml   # Main configuration
+    └── application-prod.yml # Production configuration
+```
+
+## 🔒 Authentication
+
+The application uses JWT (JSON Web Token) for authentication. The authentication flow is as follows:
+
+1. User registers with email, username, and password
+2. Email verification is sent to the user
+3. User verifies email and can then log in
+4. Upon successful login, a JWT token is issued
+5. The token must be included in the `Authorization` header for protected endpoints
+
+## 🌐 API Documentation
+
+API documentation is available through Swagger UI at:
+
+```
+http://localhost:8087/api/swagger-ui/index.html
+```
+
+This provides a comprehensive interface to explore and test all available endpoints.
+
+## 🧪 Testing
+
+```bash
+# Run tests
+mvn test
+
+# Run tests with coverage report
+mvn test jacoco:report
+```
+
+## 🚢 Deployment
+
+### Production Configuration
+
+For production deployment, update the `application-prod.yml` file with appropriate settings for your production environment.
+
+### Security Considerations
+
+1. Change all default passwords and secrets
+2. Enable HTTPS in production
+3. Configure proper CORS settings
+4. Review and adjust rate limiting settings
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
