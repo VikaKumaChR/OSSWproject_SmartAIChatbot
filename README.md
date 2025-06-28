@@ -2,6 +2,13 @@
 
 A robust Spring Boot application that serves as the backend for the AI Chat Assistant platform. This project provides RESTful APIs for user authentication, conversation management, and AI model integration.
 
+## Contributors
+
+- xingyangccd（희건춘）
+- VikaKumaChR (배민웅)
+- yang-hoo-xin(양호신)
+- (정민직)
+
 ## 🚀 Technologies
 
 - **Framework**: [Spring Boot](https://spring.io/projects/spring-boot) 2.7.x
